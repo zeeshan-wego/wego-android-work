@@ -1,0 +1,137 @@
+diff --git a/flights/src/main/java/com/wego/android/features/flightsearchresults/FlightSearchResultsAdapter.java b/flights/src/main/java/com/wego/android/features/flightsearchresults/FlightSearchResultsAdapter.java
+index 38ef0b8d1d..a1c085ddba 100644
+--- a/flights/src/main/java/com/wego/android/features/flightsearchresults/FlightSearchResultsAdapter.java
++++ b/flights/src/main/java/com/wego/android/features/flightsearchresults/FlightSearchResultsAdapter.java
+@@ -324,12 +324,6 @@ public class FlightSearchResultsAdapter extends RecyclerView.Adapter<FlightSearc
+                 disclaimerItem.setType(JacksonFlightTrip.TYPE_DISCLAIMER);
+             }
+             int topIndex = 0;
+-            if (showPersonalizationBanner && !displayedTrips.isEmpty()) {
+-                JacksonFlightTrip bannerItem = new JacksonFlightTrip(
+-                        JacksonFlightTrip.TYPE_PERSONALIZATION_BANNER);
+-                displayedTrips.add(topIndex, bannerItem);
+-                topIndex++;
+-            }
+             if (disclaimerItem != null) {
+                 displayedTrips.add(topIndex, disclaimerItem);
+                 topIndex++;
+@@ -338,18 +332,24 @@ public class FlightSearchResultsAdapter extends RecyclerView.Adapter<FlightSearc
+                 displayedTrips.add(topIndex, advisoryItem);
+                 topIndex++;
+             }
+-
+             if (isHajjSeasonActive) {
+                 JacksonFlightTrip item = new JacksonFlightTrip(JacksonFlightTrip.TYPE_HAJJ_SEASON_WARNING);
+                 displayedTrips.add(topIndex, item);
++                topIndex++;
++            }
++            if (showPersonalizationBanner && !filteredTrips.isEmpty()) {
++                JacksonFlightTrip bannerItem = new JacksonFlightTrip(
++                        JacksonFlightTrip.TYPE_PERSONALIZATION_BANNER);
++                displayedTrips.add(topIndex, bannerItem);
++                topIndex++;
+             }
+ 
+-            // Add Set Price Alert item - only if there's at least one flight and at most in 3rd position
++            // Add Set Price Alert item after banners, at defaultPriceAlertItemPosition within flight results
+             if (!filteredTrips.isEmpty() && setPriceAlertClickListener != null) {
+                 if (setPriceAlertItem == null) {
+                     setPriceAlertItem = new JacksonFlightTrip(JacksonFlightTrip.TYPE_SET_PRICE_ALERT);
+                 }
+-                int insertPosition = Math.max(0, defaultPriceAlertItemPosition);
++                int insertPosition = topIndex + Math.max(0, defaultPriceAlertItemPosition);
+                 // Make sure we don't insert beyond the list size
+                 insertPosition = Math.min(insertPosition, displayedTrips.size());
+                 displayedTrips.add(insertPosition, setPriceAlertItem);
+@@ -744,11 +744,13 @@ public class FlightSearchResultsAdapter extends RecyclerView.Adapter<FlightSearc
+             View adView = LayoutInflater.from(viewGroup.getContext()).inflate(com.wego.android.libbase.R.layout.message_box, viewGroup, false);
+             DisclaimerWegoTextView disclaimerMsgText = adView.findViewById(R.id.disclaimer_message);
+             disclaimerMsgText.setDisclaimerMessage(ConstantsLib.DisclaimerMessageTypes.FLIGHT_DISCLAIMER_TYPE);
++            setCardHorizontalMargin(disclaimerMsgText);
+             return new DisclaimerViewHolder(adView);
+         } else if (viewType == JacksonFlightTrip.TYPE_HAJJ_SEASON_WARNING) {
+             View adView = LayoutInflater.from(viewGroup.getContext()).inflate(com.wego.android.libbase.R.layout.message_box_warning, viewGroup, false);
+             DisclaimerWegoTextView disclaimerMsgText = adView.findViewById(R.id.disclaimer_message);
+             disclaimerMsgText.setDisclaimerMessage(ConstantsLib.DisclaimerMessageTypes.HAJJ_DISCLAIMER_TYPE);
++            setCardHorizontalMargin(disclaimerMsgText);
+             return new DisclaimerViewHolder(adView);
+         } else if (viewType == JacksonFlightTrip.TYPE_PERSONALIZATION_BANNER) {
+             View view = LayoutInflater.from(viewGroup.getContext())
+@@ -798,6 +800,17 @@ public class FlightSearchResultsAdapter extends RecyclerView.Adapter<FlightSearc
+ 
+     }
+ 
++    private void setCardHorizontalMargin(View view) {
++        int margin = Math.round(16 * view.getResources().getDisplayMetrics().density);
++        ViewGroup.LayoutParams lp = view.getLayoutParams();
++        if (lp instanceof ViewGroup.MarginLayoutParams) {
++            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) lp;
++            params.setMarginStart(margin);
++            params.setMarginEnd(margin);
++            view.setLayoutParams(params);
++        }
++    }
++
+     private void addTag(ArrayList<ImageView> list, ImageView view, String tag) {
+         String url = CloudinaryImageUtilLib.getAirlineSquareImageUrlWithoutBorder(tag, smallImageSize);
+         if (view.getTag() != null && view.getTag().equals(url)) {
+diff --git a/flights/src/test/java/com/wego/android/features/flightsearchresults/FlightSearchResultsAdapterTest.java b/flights/src/test/java/com/wego/android/features/flightsearchresults/FlightSearchResultsAdapterTest.java
+index 85bbd35683..473e1f6cec 100644
+--- a/flights/src/test/java/com/wego/android/features/flightsearchresults/FlightSearchResultsAdapterTest.java
++++ b/flights/src/test/java/com/wego/android/features/flightsearchresults/FlightSearchResultsAdapterTest.java
+@@ -1165,5 +1165,54 @@ public class FlightSearchResultsAdapterTest {
+         field.setInt(adapter, position);
+     }
+ 
++    @Test
++    public void updateRecyclerView_disclaimerAndHajjAndPersonalization_bannerOrderIsCorrect() throws Exception {
++        JacksonFlightTrip disclaimer = new JacksonFlightTrip();
++        disclaimer.setType(JacksonFlightTrip.TYPE_DISCLAIMER);
++        setAdapterField("disclaimerItem", disclaimer);
++        setAdapterField("isHajjSeasonActive", true);
++        setAdapterField("showPersonalizationBanner", true);
++
++        adapter.updateRecyclerView();
++
++        List<JacksonFlightTrip> displayed = getDisplayedTrips();
++        assertEquals("First item should be disclaimer", JacksonFlightTrip.TYPE_DISCLAIMER, displayed.get(0).getType());
++        assertEquals("Second item should be hajj warning", JacksonFlightTrip.TYPE_HAJJ_SEASON_WARNING, displayed.get(1).getType());
++        assertEquals("Third item should be personalization banner", JacksonFlightTrip.TYPE_PERSONALIZATION_BANNER, displayed.get(2).getType());
++    }
++
++    @Test
++    public void updateRecyclerView_twoBannersAndPriceAlert_priceAlertIsAfterBanners() throws Exception {
++        // topIndex = 2 (disclaimer + hajj); defaultPriceAlertItemPosition = 2 (mocked in setUp)
++        // expected price alert at position 4
++        JacksonFlightTrip disclaimer = new JacksonFlightTrip();
++        disclaimer.setType(JacksonFlightTrip.TYPE_DISCLAIMER);
++        setAdapterField("disclaimerItem", disclaimer);
++        setAdapterField("isHajjSeasonActive", true);
++        setAdapterField("setPriceAlertClickListener", mock(FlightSearchResultsAdapter.OnSetPriceAlertClickListener.class));
++
++        adapter.updateRecyclerView();
++
++        List<JacksonFlightTrip> displayed = getDisplayedTrips();
++        assertEquals("Price alert should be at topIndex + defaultPriceAlertItemPosition",
++                JacksonFlightTrip.TYPE_SET_PRICE_ALERT, displayed.get(4).getType());
++    }
++
++    @Test
++    public void updateRecyclerView_emptyFilteredTrips_personalizationBannerNotShown() throws Exception {
++        adapter.addData(flight, new ArrayList<>(), false, new FlightSearchResultsAdapter.AddDataListener() {
++            @Override
++            public void onItemsProcessed() {}
++        });
++        setAdapterField("showPersonalizationBanner", true);
++
++        adapter.updateRecyclerView();
++
++        List<JacksonFlightTrip> displayed = getDisplayedTrips();
++        for (JacksonFlightTrip item : displayed) {
++            assertNotEquals("Personalization banner should not appear with no flights",
++                    JacksonFlightTrip.TYPE_PERSONALIZATION_BANNER, item.getType());
++        }
++    }
+ 
+ }
+\ No newline at end of file
