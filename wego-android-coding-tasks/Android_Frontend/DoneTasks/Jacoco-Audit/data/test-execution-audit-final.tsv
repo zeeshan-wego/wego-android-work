@@ -1,0 +1,34 @@
+PushTemplates	NO_TESTS	0	
+baselineprofile	NO_TESTS	0	
+hmsbase	NO_TESTS	0	
+libmapsutils	NO_TESTS	0	
+libmaterialedittext	NO_TESTS	0	
+localisation	NO_TESTS	0	
+multicity	NO_TESTS	0	
+wegocalendarlib	NO_TESTS	0	
+wegodesignsystem	NO_TESTS	0	
+wegoinstant	NO_TESTS	0	
+wegouifoundation	NO_TESTS	0	
+wegowear	NO_TESTS	0	
+xiaomibase	NO_TESTS	0	
+airlinesearchform	OK	11	airlinesearchform/build/jacoco/testPlaystoreDebugUnitTest.exec
+bookinghistory	OK	26	bookinghistory/build/jacoco/testPlaystoreDebugUnitTest.exec
+bowflightsbase	OK	25	bowflightsbase/build/jacoco/testPlaystoreDebugUnitTest.exec
+citydestinationpages	OK	12	citydestinationpages/build/jacoco/testPlaystoreDebugUnitTest.exec
+countrydestinationpages	OK	19	countrydestinationpages/build/jacoco/testPlaystoreDebugUnitTest.exec
+flexibleairlines	OK	2	flexibleairlines/build/jacoco/testPlaystoreDebugUnitTest.exec
+flights	OK	124	flights/build/jacoco/testPlaystoreDebugUnitTest.exec
+flightspl	OK	17	flightspl/build/jacoco/testPlaystoreDebugUnitTest.exec
+home	OK	88	home/build/jacoco/testPlaystoreDebugUnitTest.exec
+homebase	OK	55	homebase/build/outputs/unit_test_code_coverage/playstoreDebugUnitTest/testPlaystoreDebugUnitTest.exec
+hotels	OK	65	hotels/build/jacoco/testPlaystoreDebugUnitTest.exec
+hotelsv2	OK	44	hotelsv2/build/jacoco/testPlaystoreDebugUnitTest.exec
+libbase	OK	131	libbase/build/jacoco/testPlaystoreDebugUnitTest.exec
+libbasewithcompose	OK	7	libbasewithcompose/build/outputs/unit_test_code_coverage/playstoreDebugUnitTest/testPlaystoreDebugUnitTest.exec
+mytrips	OK	16	mytrips/build/jacoco/testPlaystoreDebugUnitTest.exec
+onboardingflow	OK	2	onboardingflow/build/outputs/unit_test_code_coverage/playstoreDebugUnitTest/testPlaystoreDebugUnitTest.exec
+personalization	OK	5	personalization/build/jacoco/testPlaystoreDebugUnitTest.exec
+pricealert	OK	11	pricealert/build/jacoco/testPlaystoreDebugUnitTest.exec
+wegoapk	OK	63	wegoapk/build/jacoco/testPlaystoreDebugUnitTest.exec
+wegoauth	OK	23	wegoauth/build/outputs/unit_test_code_coverage/playstoreDebugUnitTest/testPlaystoreDebugUnitTest.exec
+wegopayments	OK	39	wegopayments/build/jacoco/testPlaystoreDebugUnitTest.exec

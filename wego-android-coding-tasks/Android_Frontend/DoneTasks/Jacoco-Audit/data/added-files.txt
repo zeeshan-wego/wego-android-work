@@ -1,0 +1,3 @@
+com/wego/android/adapters/RecentSearchNewAdapter.kt
+com/wego/android/features/hotelsearch/HotelRecentSearchNewAdapter.kt
+com/wego/android/util/WegoFirebasePushUtil.kt

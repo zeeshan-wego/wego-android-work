@@ -1,0 +1,5 @@
+[classify] fileFilter=801  sourceFileFilter=77  xmlPostProcess=5
+[classify] EXCLUDED_BY_FILEFILTER: 1315
+[classify] EXCLUDED_BY_SOURCEFILTER: 0
+[classify] EXCLUDED_BY_XML_POSTPROCESS: 5
+[classify] UNEXPLAINED: 2

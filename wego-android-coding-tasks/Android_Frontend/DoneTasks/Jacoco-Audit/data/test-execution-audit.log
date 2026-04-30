@@ -1,0 +1,9 @@
+# Repo root: /Users/zeeshanarif/Documents/GitHub/newandroid/wego-android-n
+
+# OK             : 20 modules
+# MISSING_EXEC   : 1 modules (BUGS)
+# EXEC_NO_TESTS  : 0 modules
+# NO_TESTS       : 13 modules
+
+# Total tests in OK modules: 783
+# Total tests in MISSING_EXEC modules: 2
