@@ -1,5 +1,11 @@
 # Android_Frontend Tasks Summary
 
+## Week Ending: May 15, 2026
+
+| Task | Owner | Started | Completed | Description | Weekly Summary |
+|------|-------|---------|-----------|-------------|----------------|
+| MOBILE-8219 Cleanup assets.wego.com hardcoded references | zeeshan@wego.com | May 12 | May 12 | Housekeeping: remove assets.wego.com from @Preview blocks and stale comments; route `FlightBookingCard` runtime URL through new `a_mytrips_airline_logo_base_url` config key; `config_defaults.json` host migration deferred pending new CDN host | [Link](../../WeeklySummaries/Week-Ending-2026-05-15/2026-05-12_Android_Frontend_MOBILE-8219-migrate-assets-wego-cdn.md) |
+
 ## Week Ending: May 1, 2026
 
 | Task | Owner | Started | Completed | Description | Weekly Summary |
